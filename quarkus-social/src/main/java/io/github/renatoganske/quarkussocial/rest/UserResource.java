@@ -2,6 +2,8 @@ package io.github.renatoganske.quarkussocial.rest;
 
 import io.github.renatoganske.quarkussocial.rest.dto.CreateUserRequest;
 import io.github.renatoganske.quarkussocial.rest.quarkussocial.domain.model.User;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
 
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
@@ -28,6 +30,7 @@ public class UserResource {
 
     @GET
     public Response listAllUsers(){
-        return Response.ok().build();
+        PanacheQuery<User> query = User.findAll();
+        return Response.ok(query.list()).build();
     }
 }
