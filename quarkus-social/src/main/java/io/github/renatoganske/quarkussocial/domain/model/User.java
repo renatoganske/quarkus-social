@@ -1,6 +1,5 @@
-package io.github.renatoganske.quarkussocial.rest.quarkussocial.domain.model;
+package io.github.renatoganske.quarkussocial.domain.model;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,7 +11,7 @@ import java.util.Objects;
 @Table(name = "users")
 @Getter
 @Setter
-public class User extends PanacheEntityBase {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
