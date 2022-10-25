@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 @Setter
 
 public class CreateUserRequest {
-    @NotBlank(message = "Nome is required.")
+    @NotBlank(message = "Name is required.")
     private String name;
     @NotNull(message = "Age is required.")
     private Integer age;
