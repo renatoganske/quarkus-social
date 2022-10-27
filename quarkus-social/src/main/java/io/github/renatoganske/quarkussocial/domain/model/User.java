@@ -1,16 +1,13 @@
 package io.github.renatoganske.quarkussocial.domain.model;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
 @Table(name = "users")
-@Getter
-@Setter
+@Data
 public class User {
 
     @Id

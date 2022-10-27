@@ -1,6 +1,7 @@
 package io.github.renatoganske.quarkussocial.rest.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,9 +12,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Getter
-@Setter
-@AllArgsConstructor
+@Data
 public class ResponseError {
 
     public static final int UNPROCESSED_ENTITY_STATUS = 422;
