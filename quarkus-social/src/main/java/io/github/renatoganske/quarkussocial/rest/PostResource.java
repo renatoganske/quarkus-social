@@ -5,12 +5,15 @@ import io.github.renatoganske.quarkussocial.domain.model.User;
 import io.github.renatoganske.quarkussocial.domain.repository.PostRepository;
 import io.github.renatoganske.quarkussocial.domain.repository.UserRepository;
 import io.github.renatoganske.quarkussocial.rest.dto.CreatePostRequest;
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
+import io.quarkus.panache.common.Sort;
 
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.time.LocalDateTime;
 
 @Path("/users/{userId}/posts")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -21,8 +24,9 @@ public class PostResource {
     private PostRepository repository;
 
     @Inject
-    public PostResource(UserRepository userRepository,
-                        PostRepository repository) {
+    public PostResource(
+            UserRepository userRepository,
+            PostRepository repository) {
         this.userRepository = userRepository;
         this.repository = repository;
     }
@@ -31,8 +35,9 @@ public class PostResource {
     @Transactional
     public Response savePost(
             @PathParam("userId") Long userId, CreatePostRequest request) {
+
         User user = userRepository.findById(userId);
-        if(user ==null){
+        if (user == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
 
@@ -41,15 +46,21 @@ public class PostResource {
         post.setUser(user);
 
         repository.persist(post);
+
         return Response.status(Response.Status.CREATED).build();
     }
 
     @GET
-    public Response listPosts(@PathParam("userId") Long userId) {
+    public Response listPosts( @PathParam("userId") Long userId ){
         User user = userRepository.findById(userId);
-        if(user ==null){
+        if(user == null){
             return Response.status(Response.Status.NOT_FOUND).build();
         }
+
+        var query = repository.find("user", user);
+        
+        var list = query.list();
+
         return Response.ok().build();
     }
 }
