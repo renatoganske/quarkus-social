@@ -12,11 +12,11 @@ public class Follower {
     @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToMany
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToMany
-    @JoinColumn(name = "user_id")
+    @ManyToOne
+    @JoinColumn(name = "follower_id")
     private User follower;
 }

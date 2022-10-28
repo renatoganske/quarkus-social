@@ -15,6 +15,6 @@ CREATE TABLE POSTS (
 
 CREATE TABLE FOLLOWERS (
     id bigserial not null primary key,
-    id_user bigint not null references USERS(id),
+    user_id bigint not null references USERS(id),
 	follower_id bigint not null references USERS(id)
 );
