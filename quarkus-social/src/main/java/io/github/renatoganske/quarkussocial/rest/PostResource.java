@@ -58,9 +58,9 @@ public class PostResource {
         }
 
         var query = repository.find("user", user);
-        
+
         var list = query.list();
 
-        return Response.ok().build();
+        return Response.ok(list).build();
     }
 }
