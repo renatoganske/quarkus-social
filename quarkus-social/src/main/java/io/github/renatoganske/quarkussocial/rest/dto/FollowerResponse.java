@@ -12,9 +12,7 @@ public class FollowerResponse {
     private Long id;
     private String name;
 
-    public  FollowerResponse(Follower follower){
+    public FollowerResponse(Follower follower) {
         this(follower.getId(), follower.getFollower().getName());
     }
-
-
 }
