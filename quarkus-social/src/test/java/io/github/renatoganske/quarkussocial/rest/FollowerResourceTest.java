@@ -20,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @QuarkusTest
 @TestHTTPEndpoint(FollowerResource.class)
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class FollowerResourceTest {
 
     @Inject
@@ -57,7 +56,6 @@ class FollowerResourceTest {
 
     @Test
     @DisplayName("should return 409 when followerId is equal to User Id")
-    @Order(1)
     public void sameUserAsFollowerTest(){
 
         var body = new FollowerRequest();
@@ -76,7 +74,6 @@ class FollowerResourceTest {
 
     @Test
     @DisplayName("should return 404 on follow a user when User id doesn't exist")
-    @Order(2)
     public void userNotFoundWhenTryingToFollowTest(){
 
         var body = new FollowerRequest();
@@ -96,7 +93,6 @@ class FollowerResourceTest {
 
     @Test
     @DisplayName("should follow a user")
-    @Order(3)
     public void followUserTest(){
 
         var body = new FollowerRequest();
@@ -114,7 +110,6 @@ class FollowerResourceTest {
 
     @Test
     @DisplayName("should return 404 on list user followers and User id doesn't exist")
-    @Order(4)
     public void userNotFoundWhenListingFollowersTest(){
 
         var inexistentUserId = 999;
@@ -130,22 +125,49 @@ class FollowerResourceTest {
 
     @Test
     @DisplayName("should list a user followers")
-    @Order(5)
     public void listFollowersTest(){
 
         var response =
-            given()
-                    .contentType(ContentType.JSON)
-                    .pathParam("userId", userId)
-                    .when()
-                    .get()
-                    .then()
-                    .extract().response();
+                given()
+                        .contentType(ContentType.JSON)
+                        .pathParam("userId", userId)
+                        .when()
+                        .get()
+                        .then()
+                        .extract().response();
 
         var followersCount = response.jsonPath().get("followersCount");
+        var followersContent = response.jsonPath().getList("content");
+
         assertEquals(Response.Status.OK.getStatusCode(), response.statusCode());
         assertEquals(1,followersCount);
+        assertEquals(1, followersContent.size());
     }
 
+    @Test
+    @DisplayName("should return 404 on unfollow user and User id doesn't exist")
+    public void userNotFoundWhenUnfollowAUserTest(){
 
+        var inexistentUserId = 999;
+
+        given()
+                .pathParam("userId", inexistentUserId)
+                .queryParam("followerId", followerId)
+                .when()
+                .delete()
+                .then()
+                .statusCode(Response.Status.NOT_FOUND.getStatusCode());
+    }
+
+    @Test
+    @DisplayName("should unfollow an user")
+    public void unfollowUserTest(){
+        given()
+                .pathParam("userId", userId)
+                .queryParam("followerId", followerId)
+                .when()
+                .delete()
+                .then()
+                .statusCode(Response.Status.NO_CONTENT.getStatusCode());
+    }
 }
